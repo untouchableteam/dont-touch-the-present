@@ -1,0 +1,94 @@
+analogRead(2) values determine the trigger point for the photocell.
+ analogRead(0) and analogRead(1) values determine the current which will cause the Arduino to think the package has hit an obstacle.  If you run on carpet, the values may need to be higher.  If you run the motors faster, the value may need to be higher.
+ 
+Note that the "startup current" on motors is greater than the "run" current--that's why there is a delay on forward before checking the current values.
+ 
+
+
+int valm=0;
+ int valm1=0;
+ int trigger=0;
+ int triggerlock=0;
+ const int pwmA=3;
+ const int pwmB=11;
+ const int brakeA=9;
+ const int brakeB=8;
+ const int dirA=12;
+ const int dirB=13;
+ const int relay=7;
+ 
+void setup() {
+ 
+
+pinMode(relay, OUTPUT);
+ 
+
+digitalWrite(relay, HIGH);
+ 
+delay(500);//leave relay on .5 second--makes "eek" sound
+ digitalWrite(relay, LOW);
+ }
+ 
+void loop() {
+  
+   trigger=analogRead(2);
+   if(trigger<900 or triggerlock>0) {//light shining on sensor now or previously
+    
+     triggerlock=10;//don't check light again
+   
+    
+     pinMode(dirA, OUTPUT);
+ pinMode(brakeA, OUTPUT);
+ 
+pinMode(dirB, OUTPUT);
+ pinMode(brakeB, OUTPUT);
+ 
+digitalWrite(dirA, HIGH);//forward A
+ digitalWrite(brakeA, LOW);//release brake A
+ analogWrite(pwmA, 150);//set speed A
+ 
+digitalWrite(dirB, HIGH);//forward B motor
+ digitalWrite(brakeB, LOW);
+ analogWrite(pwmB, 150);//set speed B
+ 
+
+
+valm=analogRead(0);
+ valm1=analogRead(1);
+ if(valm>520 or valm1>520) {
+  
+ digitalWrite(relay, HIGH);//turn on "eek" sound
+ delay(100);
+ digitalWrite(relay, LOW);
+ digitalWrite(brakeA, HIGH);//stop motor A
+ digitalWrite(brakeB, HIGH);//stop Motor B
+ 
+digitalWrite(dirA, LOW);//reverse A
+ digitalWrite(brakeA, LOW);//release brake A
+ analogWrite(pwmA, 150);//set speed A
+ 
+digitalWrite(dirB, LOW);//reverse B
+ digitalWrite(brakeB, LOW);
+ analogWrite(pwmB, 150);//set speed B
+ 
+delay(300);
+ 
+digitalWrite(brakeA, HIGH);//stop one wheel
+ 
+delay(400);
+ digitalWrite(brakeB, HIGH);//stop other wheel
+ 
+
+
+//start both wheels forward
+ digitalWrite(dirA, HIGH);//forward A
+ digitalWrite(brakeA, LOW);//release brake A
+ analogWrite(pwmA, 150);//set speed A
+ 
+digitalWrite(dirB, HIGH);//forward B
+ digitalWrite(brakeB, LOW);
+ analogWrite(pwmB, 150);//set speed B
+ 
+delay(700);//get past startup current
+ 
+}}}
