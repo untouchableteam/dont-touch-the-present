@@ -1,7 +1,7 @@
-analogRead(2) values determine the trigger point for the photocell.
- analogRead(0) and analogRead(1) values determine the current which will cause the Arduino to think the package has hit an obstacle.  If you run on carpet, the values may need to be higher.  If you run the motors faster, the value may need to be higher.
+analogRead(2) //values determine the trigger point for the photocell.
+ analogRead(0) and analogRead(1) //values determine the current which will cause the Arduino to think the package has hit an obstacle.  If you run on carpet, the values may need to be higher.  If you run the motors faster, the value may need to be higher.
  
-Note that the "startup current" on motors is greater than the "run" current--that's why there is a delay on forward before checking the current values.
+//Note that the "startup current" on motors is greater than the "run" current--that's why there is a delay on forward before checking the current values.
  
 
 
@@ -25,7 +25,7 @@ pinMode(relay, OUTPUT);
 
 digitalWrite(relay, HIGH);
  
-delay(500);//leave relay on .5 second--makes "eek" sound
+delay(2000);//leave relay on 2 seconds to play song
  digitalWrite(relay, LOW);
  }
  
@@ -57,7 +57,7 @@ valm=analogRead(0);
  valm1=analogRead(1);
  if(valm>520 or valm1>520) {
   
- digitalWrite(relay, HIGH);//turn on "eek" sound
+ digitalWrite(relay, HIGH);//turn on sound
  delay(100);
  digitalWrite(relay, LOW);
  digitalWrite(brakeA, HIGH);//stop motor A
